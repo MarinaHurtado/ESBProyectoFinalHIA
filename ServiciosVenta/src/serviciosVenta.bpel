@@ -21,5 +21,34 @@
         <partnerLink name="Ventas" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" partnerLinkType="tns:TiendaOnlineWSDL" myRole="TiendaOnlineWSDLPortTypeRole"/>
     </partnerLinks>
     <sequence>
-   </sequence>
+        <receive name="Recepcion" createInstance="yes"/>
+        <assign name="AsigStock"/>
+        <invoke name="ComprobarStock"/>
+        <if name="If1">
+            <sequence name="Sequence1">
+                <assign name="AsigPago"/>
+                <invoke name="RealizaPago"/>
+                <if name="If2">
+                    <sequence name="Sequence2">
+                        <assign name="AsigOrden"/>
+                        <invoke name="OrdenEnvio"/>
+                        <assign name="AsigOK"/>
+                        <reply name="RespOK"/>
+                    </sequence>
+                    <else>
+                        <sequence name="Sequence4">
+                            <assign name="AsigErrorPago"/>
+                            <reply name="RespErrorPago"/>
+                        </sequence>
+                    </else>
+                </if>
+            </sequence>
+            <else>
+                <sequence name="Sequence3">
+                    <assign name="AsigNoStock"/>
+                    <reply name="RespNoStock"/>
+                </sequence>
+            </else>
+        </if>
+    </sequence>
 </process>
