@@ -65,7 +65,7 @@
                 </assign>
                 <invoke name="RealizaPago" partnerLink="ServicioPago" operation="facturar" xmlns:tns="http://pasarelapago.webservice.adictosaltrabajo.com/" portType="tns:ServicioPago" inputVariable="FacturarIn" outputVariable="FacturarOut"/>
                 <if name="If2">
-                    <condition>not(contains('No', $FacturarOut.parameters/return))</condition>
+                    <condition>not(contains($FacturarOut.parameters/return, 'No'))</condition>
                     <sequence name="Sequence2">
                         <assign name="AsigOrden">
                             <copy>
@@ -93,7 +93,16 @@
                                     <from>"Error en el pago"</from>
                                     <to variable="TiendaOnlineWSDLOperationOut1" part="resultado"/>
                                 </copy>
+                                <copy>
+                                    <from variable="TiendaOnlineWSDLOperationIn" part="producto"/>
+                                    <to>$RegresaCantProdIn.parameters/nomProd</to>
+                                </copy>
+                                <copy>
+                                    <from variable="TiendaOnlineWSDLOperationIn" part="unidades"/>
+                                    <to>$RegresaCantProdIn.parameters/cantProd</to>
+                                </copy>
                             </assign>
+                            <invoke name="QuitarReservacion" partnerLink="ServicioAlmacen" operation="regresaCantProd" xmlns:tns="http://wsAlmacen/" portType="tns:ServicioAlmacen" inputVariable="RegresaCantProdIn" outputVariable="RegresaCantProdOut"/>
                             <reply name="RespErrorPago" partnerLink="Ventas" operation="TiendaOnlineWSDLOperation" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" portType="tns:TiendaOnlineWSDLPortType" variable="TiendaOnlineWSDLOperationOut1"/>
                         </sequence>
                     </else>
@@ -101,19 +110,10 @@
             </sequence>
             <else>
                 <sequence name="Sequence3">
-                    <invoke name="QuitarReservacion" partnerLink="ServicioAlmacen" operation="regresaCantProd" xmlns:tns="http://wsAlmacen/" portType="tns:ServicioAlmacen" inputVariable="RegresaCantProdIn" outputVariable="RegresaCantProdOut"/>
                     <assign name="AsigNoStock">
                         <copy>
                             <from>'No hay suficiente stock en este momento'</from>
                             <to variable="TiendaOnlineWSDLOperationOut2" part="resultado"/>
-                        </copy>
-                        <copy>
-                            <from variable="TiendaOnlineWSDLOperationIn" part="producto"/>
-                            <to>$RegresaCantProdIn.parameters/nomProd</to>
-                        </copy>
-                        <copy>
-                            <from variable="TiendaOnlineWSDLOperationIn" part="unidades"/>
-                            <to>$RegresaCantProdIn.parameters/cantProd</to>
                         </copy>
                     </assign>
                     <reply name="RespNoStock" partnerLink="Ventas" operation="TiendaOnlineWSDLOperation" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" portType="tns:TiendaOnlineWSDLPortType" variable="TiendaOnlineWSDLOperationOut2"/>
