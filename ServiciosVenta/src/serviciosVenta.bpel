@@ -15,30 +15,47 @@
     <import namespace="http://wsAlmacen/" location="http://148.205.38.104:8080/ServicioAlmacen/ServicioAlmacen?WSDL" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/ServicioPagoServiceWrapper" location="ServicioPagoServiceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://pasarelapago.webservice.adictosaltrabajo.com/" location="http://148.205.38.104:8080/ServicioPago/ServicioPagoService?WSDL" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://enterprise.netbeans.org/bpel/ServicioPaqueteriaWrapper" location="ServicioPaqueteriaWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://wsPaqueteria/" location="http://148.205.38.104:8080/ServicioPaqueteria/ServicioPaqueteria?WSDL" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="ServicioAlmacen" xmlns:tns="http://enterprise.netbeans.org/bpel/ServicioAlmacenWrapper" partnerLinkType="tns:ServicioAlmacenLinkType" partnerRole="ServicioAlmacenRole"/>
         <partnerLink name="ServicioPago" xmlns:tns="http://enterprise.netbeans.org/bpel/ServicioPagoServiceWrapper" partnerLinkType="tns:ServicioPagoLinkType" partnerRole="ServicioPagoRole"/>
+        <partnerLink name="ServicioPaqueteria" xmlns:tns="http://enterprise.netbeans.org/bpel/ServicioPaqueteriaWrapper" partnerLinkType="tns:ServicioPaqueteriaLinkType" partnerRole="ServicioPaqueteriaRole"/>
         <partnerLink name="Ventas" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" partnerLinkType="tns:TiendaOnlineWSDL" myRole="TiendaOnlineWSDLPortTypeRole"/>
     </partnerLinks>
+    <variables>
+        <variable name="EnviarProductoOut" xmlns:tns="http://wsPaqueteria/" messageType="tns:enviarProductoResponse"/>
+        <variable name="EnviarProductoIn" xmlns:tns="http://wsPaqueteria/" messageType="tns:enviarProducto"/>
+        <variable name="FacturarOut" xmlns:tns="http://pasarelapago.webservice.adictosaltrabajo.com/" messageType="tns:facturarResponse"/>
+        <variable name="FacturarIn" xmlns:tns="http://pasarelapago.webservice.adictosaltrabajo.com/" messageType="tns:facturar"/>
+        <variable name="RegresaCantProdOut" xmlns:tns="http://wsAlmacen/" messageType="tns:regresaCantProdResponse"/>
+        <variable name="RegresaCantProdIn" xmlns:tns="http://wsAlmacen/" messageType="tns:regresaCantProd"/>
+        <variable name="ChecaDispProdOut" xmlns:tns="http://wsAlmacen/" messageType="tns:checaDispProdResponse"/>
+        <variable name="ChecaDispProdIn" xmlns:tns="http://wsAlmacen/" messageType="tns:checaDispProd"/>
+        <variable name="TiendaOnlineWSDLOperationOut2" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" messageType="tns:TiendaOnlineWSDLOperationResponse"/>
+        <variable name="TiendaOnlineWSDLOperationOut1" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" messageType="tns:TiendaOnlineWSDLOperationResponse"/>
+        <variable name="TiendaOnlineWSDLOperationOut" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" messageType="tns:TiendaOnlineWSDLOperationResponse"/>
+        <variable name="TiendaOnlineWSDLOperationIn" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" messageType="tns:TiendaOnlineWSDLOperationRequest"/>
+    </variables>
     <sequence>
-        <receive name="Recepcion" createInstance="yes"/>
+        <receive name="Recepcion" createInstance="yes" partnerLink="Ventas" operation="TiendaOnlineWSDLOperation" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" portType="tns:TiendaOnlineWSDLPortType" variable="TiendaOnlineWSDLOperationIn"/>
         <assign name="AsigStock"/>
-        <invoke name="ComprobarStock"/>
+        <invoke name="ComprobarStock" partnerLink="ServicioAlmacen" operation="checaDispProd" xmlns:tns="http://wsAlmacen/" portType="tns:ServicioAlmacen" inputVariable="ChecaDispProdIn" outputVariable="ChecaDispProdOut"/>
         <if name="If1">
             <sequence name="Sequence1">
                 <assign name="AsigPago"/>
-                <invoke name="RealizaPago"/>
+                <invoke name="RealizaPago" partnerLink="ServicioPago" operation="facturar" xmlns:tns="http://pasarelapago.webservice.adictosaltrabajo.com/" portType="tns:ServicioPago" inputVariable="FacturarIn" outputVariable="FacturarOut"/>
                 <if name="If2">
                     <sequence name="Sequence2">
                         <assign name="AsigOrden"/>
-                        <invoke name="OrdenEnvio"/>
+                        <invoke name="OrdenEnvio" partnerLink="ServicioPaqueteria" operation="enviarProducto" xmlns:tns="http://wsPaqueteria/" portType="tns:ServicioPaqueteria" inputVariable="EnviarProductoIn" outputVariable="EnviarProductoOut"/>
                         <assign name="AsigOK"/>
-                        <reply name="RespOK"/>
+                        <reply name="RespOK" partnerLink="Ventas" operation="TiendaOnlineWSDLOperation" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" portType="tns:TiendaOnlineWSDLPortType" variable="TiendaOnlineWSDLOperationOut"/>
                     </sequence>
                     <else>
                         <sequence name="Sequence4">
                             <assign name="AsigErrorPago"/>
-                            <reply name="RespErrorPago"/>
+                            <reply name="RespErrorPago" partnerLink="Ventas" operation="TiendaOnlineWSDLOperation" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" portType="tns:TiendaOnlineWSDLPortType" variable="TiendaOnlineWSDLOperationOut1"/>
                         </sequence>
                     </else>
                 </if>
@@ -46,7 +63,8 @@
             <else>
                 <sequence name="Sequence3">
                     <assign name="AsigNoStock"/>
-                    <reply name="RespNoStock"/>
+                    <invoke name="QuitarReservacion" partnerLink="ServicioAlmacen" operation="regresaCantProd" xmlns:tns="http://wsAlmacen/" portType="tns:ServicioAlmacen" inputVariable="RegresaCantProdIn" outputVariable="RegresaCantProdOut"/>
+                    <reply name="RespNoStock" partnerLink="Ventas" operation="TiendaOnlineWSDLOperation" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" portType="tns:TiendaOnlineWSDLPortType" variable="TiendaOnlineWSDLOperationOut2"/>
                 </sequence>
             </else>
         </if>
