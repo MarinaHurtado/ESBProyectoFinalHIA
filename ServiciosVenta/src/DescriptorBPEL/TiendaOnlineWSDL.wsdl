@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="TiendaOnlineWSDL" targetNamespace="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <types/>
+    <message name="TiendaOnlineWSDLOperationRequest">
+        <part name="producto" type="xsd:string"/>
+        <part name="idCliente" type="xsd:int"/>
+        <part name="unidades" type="xsd:int"/>
+        <part name="precioUnidad" type="xsd:int"/>
+    </message>
+    <message name="TiendaOnlineWSDLOperationResponse">
+        <part name="resultado" type="xsd:string"/>
+    </message>
+    <portType name="TiendaOnlineWSDLPortType">
+        <operation name="TiendaOnlineWSDLOperation">
+            <input name="input1" message="tns:TiendaOnlineWSDLOperationRequest"/>
+            <output name="output1" message="tns:TiendaOnlineWSDLOperationResponse"/>
+        </operation>
+    </portType>
+    <binding name="TiendaOnlineWSDLBinding" type="tns:TiendaOnlineWSDLPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="TiendaOnlineWSDLOperation">
+            <soap:operation/>
+            <input name="input1">
+                <soap:body use="literal" namespace="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL"/>
+            </input>
+            <output name="output1">
+                <soap:body use="literal" namespace="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="TiendaOnlineWSDLService">
+        <port name="TiendaOnlineWSDLPort" binding="tns:TiendaOnlineWSDLBinding">
+            <soap:address location="http://localhost:${HttpDefaultPort}/TiendaOnlineWSDLService/TiendaOnlineWSDLPort"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="TiendaOnlineWSDL">
+        <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes. 
+In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
+A partner link type characterizes the conversational relationship between two services. The partner link type can have one or two roles.-->
+        <plnk:role name="TiendaOnlineWSDLPortTypeRole" portType="tns:TiendaOnlineWSDLPortType"/>
+    </plnk:partnerLinkType>
+</definitions>
