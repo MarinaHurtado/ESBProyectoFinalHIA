@@ -65,7 +65,7 @@
                 </assign>
                 <invoke name="RealizaPago" partnerLink="ServicioPago" operation="facturar" xmlns:tns="http://pasarelapago.webservice.adictosaltrabajo.com/" portType="tns:ServicioPago" inputVariable="FacturarIn" outputVariable="FacturarOut"/>
                 <if name="If2">
-                    <condition>true() and $FacturarOut.parameters/return</condition>
+                    <condition>not(contains('No', $FacturarOut.parameters/return))</condition>
                     <sequence name="Sequence2">
                         <assign name="AsigOrden">
                             <copy>
