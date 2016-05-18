@@ -80,7 +80,7 @@
                         <invoke name="OrdenEnvio" partnerLink="ServicioPaqueteria" operation="enviarProducto" xmlns:tns="http://wsPaqueteria/" portType="tns:ServicioPaqueteria" inputVariable="EnviarProductoIn" outputVariable="EnviarProductoOut"/>
                         <assign name="AsigOK">
                             <copy>
-                                <from>concat('El pedido con ID', $TiendaOnlineWSDLOperationIn.idCliente, $EnviarProductoOut.parameters/return, 'dias');'llegara en '</from>
+                                <from>concat('El pedido con ID', $TiendaOnlineWSDLOperationIn.idCliente, 'llegara en ', $EnviarProductoOut.parameters/return, 'dias')</from>
                                 <to variable="TiendaOnlineWSDLOperationOut" part="resultado"/>
                             </copy>
                         </assign>
