@@ -51,6 +51,7 @@
         </assign>
         <invoke name="ComprobarStock" partnerLink="ServicioAlmacen" operation="checaDispProd" xmlns:tns="http://wsAlmacen/" portType="tns:ServicioAlmacen" inputVariable="ChecaDispProdIn" outputVariable="ChecaDispProdOut"/>
         <if name="If1">
+            <condition>true() and $ChecaDispProdOut.parameters/return</condition>
             <sequence name="Sequence1">
                 <assign name="AsigPago">
                     <copy>
@@ -64,6 +65,7 @@
                 </assign>
                 <invoke name="RealizaPago" partnerLink="ServicioPago" operation="facturar" xmlns:tns="http://pasarelapago.webservice.adictosaltrabajo.com/" portType="tns:ServicioPago" inputVariable="FacturarIn" outputVariable="FacturarOut"/>
                 <if name="If2">
+                    <condition>true() and $FacturarOut.parameters/return</condition>
                     <sequence name="Sequence2">
                         <assign name="AsigOrden">
                             <copy>
@@ -71,14 +73,14 @@
                                 <to>$EnviarProductoIn.parameters/numAut</to>
                             </copy>
                             <copy>
-                                <from variable="TiendaOnlineWSDLOperationIn" part="idCliente"/>
+                                <from>'HIA store'</from>
                                 <to>$EnviarProductoIn.parameters/empresa</to>
                             </copy>
                         </assign>
                         <invoke name="OrdenEnvio" partnerLink="ServicioPaqueteria" operation="enviarProducto" xmlns:tns="http://wsPaqueteria/" portType="tns:ServicioPaqueteria" inputVariable="EnviarProductoIn" outputVariable="EnviarProductoOut"/>
                         <assign name="AsigOK">
                             <copy>
-                                <from>'Compra terminada'</from>
+                                <from>concat('El pedido con ID', $TiendaOnlineWSDLOperationIn.idCliente, $EnviarProductoOut.parameters/return, 'dias');'llegara en '</from>
                                 <to variable="TiendaOnlineWSDLOperationOut" part="resultado"/>
                             </copy>
                         </assign>
