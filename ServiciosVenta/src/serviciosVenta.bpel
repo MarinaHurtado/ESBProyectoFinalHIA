@@ -24,6 +24,7 @@
         <partnerLink name="Ventas" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" partnerLinkType="tns:TiendaOnlineWSDL" myRole="TiendaOnlineWSDLPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="TiendaOnlineWSDLOperationOut3" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" messageType="tns:TiendaOnlineWSDLOperationResponse"/>
         <variable name="EnviarProductoOut" xmlns:tns="http://wsPaqueteria/" messageType="tns:enviarProductoResponse"/>
         <variable name="EnviarProductoIn" xmlns:tns="http://wsPaqueteria/" messageType="tns:enviarProducto"/>
         <variable name="FacturarOut" xmlns:tns="http://pasarelapago.webservice.adictosaltrabajo.com/" messageType="tns:facturarResponse"/>
@@ -80,7 +81,7 @@
                         <invoke name="OrdenEnvio" partnerLink="ServicioPaqueteria" operation="enviarProducto" xmlns:tns="http://wsPaqueteria/" portType="tns:ServicioPaqueteria" inputVariable="EnviarProductoIn" outputVariable="EnviarProductoOut"/>
                         <assign name="AsigOK">
                             <copy>
-                                <from>concat('El pedido con ID', $TiendaOnlineWSDLOperationIn.idCliente, 'llegara en ', $EnviarProductoOut.parameters/return, 'dias')</from>
+                                <from>concat('Pedido con ', $FacturarOut.parameters/return, '. ', $EnviarProductoOut.parameters/return)</from>
                                 <to variable="TiendaOnlineWSDLOperationOut" part="resultado"/>
                             </copy>
                         </assign>
@@ -90,7 +91,7 @@
                         <sequence name="Sequence4">
                             <assign name="AsigErrorPago">
                                 <copy>
-                                    <from>"Error en el pago"</from>
+                                    <from>'Error en el pago'</from>
                                     <to variable="TiendaOnlineWSDLOperationOut1" part="resultado"/>
                                 </copy>
                                 <copy>
