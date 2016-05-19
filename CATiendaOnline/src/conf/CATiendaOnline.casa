@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<casa xmlns="http://java.sun.com/xml/ns/casa" xmlns:ns1="http://pasarelapago.webservice.adictosaltrabajo.com/" xmlns:ns2="http://wsAlmacen/" xmlns:ns3="http://wsPaqueteria/" xmlns:ns4="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" xmlns:ns5="http://enterprise.netbeans.org/bpel/ServiciosVenta/serviciosVenta" xmlns:xlink="http://www.w3.org/2000/xlink">
+<casa xmlns="http://java.sun.com/xml/ns/casa" xmlns:ns1="http://pasarelapago.webservice.adictosaltrabajo.com/" xmlns:ns2="http://wsAlmacen/" xmlns:ns3="http://wsPaqueteria/" xmlns:ns4="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" xmlns:ns5="http://enterprise.netbeans.org/bpel/ServiciosVenta/serviciosVenta" xmlns:xlink="http://www.w3.org/2000/xlink" xmlns:ns="CATiendaOnline">
     <endpoints>
         <endpoint endpoint-name="ServicioPagoPort" interface-name="ns1:ServicioPago" name="endpoint1" service-name="ns1:ServicioPagoService"/>
         <endpoint endpoint-name="ServicioAlmacenPort" interface-name="ns2:ServicioAlmacen" name="endpoint2" service-name="ns2:ServicioAlmacen"/>
@@ -19,7 +19,7 @@
         </service-engine-service-unit>
         <binding-component-service-unit artifacts-zip="sun-http-binding.jar" component-name="sun-http-binding" description="Represents this Service Unit" name="CATiendaOnline-sun-http-binding" unit-name="sun-http-binding">
             <ports>
-                <port x="67" y="276">
+                <port x="67" y="280">
                     <link xlink:href="../jbiServiceUnits/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL.wsdl#xpointer(/definitions/service[@name='TiendaOnlineWSDLService']/port[@name='TiendaOnlineWSDLPort'])" xlink:type="simple"/>
                     <consumes endpoint="endpoint4"/>
                     <provides endpoint="endpoint4"/>
@@ -53,6 +53,7 @@
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioAlmacen/148.205.38.104_8080/ServicioAlmacen/ServicioAlmacen.wsdl#xpointer(/definitions/portType[@name='ServicioAlmacen'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioPago/148.205.38.104_8080/ServicioPago/ServicioPagoService.wsdl#xpointer(/definitions/portType[@name='ServicioPago'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioPaqueteria/148.205.38.104_8080/ServicioPaqueteria/ServicioPaqueteria.wsdl#xpointer(/definitions/portType[@name='ServicioPaqueteria'])" xlink:type="simple"/>
+        <link xlink:href="../jbiasa/CATiendaOnline.wsdl#xpointer(/definitions/portType[@name=&apos;dummyCasaPortType&apos;])" xlink:type="simple"/>
     </porttypes>
     <bindings>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL.wsdl#xpointer(/definitions/binding[@name='TiendaOnlineWSDLBinding'])" xlink:type="simple"/>

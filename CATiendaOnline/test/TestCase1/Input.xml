@@ -3,7 +3,7 @@
     <tien:TiendaOnlineWSDLOperation>
       <producto>Avena</producto>
       <idCliente>123-456-789</idCliente>
-      <unidades>1</unidades>
+      <unidades>50</unidades>
       <precioUnidad>15</precioUnidad>
     </tien:TiendaOnlineWSDLOperation>
   </soapenv:Body>

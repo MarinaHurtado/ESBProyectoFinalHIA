@@ -9,6 +9,7 @@
         <part name="idCliente" type="xsd:string"/>
         <part name="unidades" type="xsd:int"/>
         <part name="precioUnidad" type="xsd:int"/>
+        <part name="ValidarPago" type="xsd:boolean"/>
     </message>
     <message name="TiendaOnlineWSDLOperationResponse">
         <part name="resultado" type="xsd:string"/>
