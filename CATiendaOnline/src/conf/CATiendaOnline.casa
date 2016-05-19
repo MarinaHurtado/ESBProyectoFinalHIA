@@ -51,18 +51,21 @@
     <porttypes>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL.wsdl#xpointer(/definitions/portType[@name='TiendaOnlineWSDLPortType'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioAlmacen/148.205.38.104_8080/ServicioAlmacen/ServicioAlmacen.wsdl#xpointer(/definitions/portType[@name='ServicioAlmacen'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioPago/148.205.38.102_8080/ServicioPago/ServicioPagoService.wsdl#xpointer(/definitions/portType[@name='ServicioPago'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioPago/148.205.38.104_8080/ServicioPago/ServicioPagoService.wsdl#xpointer(/definitions/portType[@name='ServicioPago'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioPaqueteria/148.205.38.104_8080/ServicioPaqueteria/ServicioPaqueteria.wsdl#xpointer(/definitions/portType[@name='ServicioPaqueteria'])" xlink:type="simple"/>
     </porttypes>
     <bindings>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL.wsdl#xpointer(/definitions/binding[@name='TiendaOnlineWSDLBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioAlmacen/148.205.38.104_8080/ServicioAlmacen/ServicioAlmacen.wsdl#xpointer(/definitions/binding[@name='ServicioAlmacenPortBinding'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioPago/148.205.38.102_8080/ServicioPago/ServicioPagoService.wsdl#xpointer(/definitions/binding[@name='ServicioPagoPortBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioPago/148.205.38.104_8080/ServicioPago/ServicioPagoService.wsdl#xpointer(/definitions/binding[@name='ServicioPagoPortBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioPaqueteria/148.205.38.104_8080/ServicioPaqueteria/ServicioPaqueteria.wsdl#xpointer(/definitions/binding[@name='ServicioPaqueteriaPortBinding'])" xlink:type="simple"/>
     </bindings>
     <services>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL.wsdl#xpointer(/definitions/service[@name='TiendaOnlineWSDLService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioAlmacen/148.205.38.104_8080/ServicioAlmacen/ServicioAlmacen.wsdl#xpointer(/definitions/service[@name='ServicioAlmacen'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioPago/148.205.38.102_8080/ServicioPago/ServicioPagoService.wsdl#xpointer(/definitions/service[@name='ServicioPagoService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioPago/148.205.38.104_8080/ServicioPago/ServicioPagoService.wsdl#xpointer(/definitions/service[@name='ServicioPagoService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/ServiciosVenta/ServicioPaqueteria/148.205.38.104_8080/ServicioPaqueteria/ServicioPaqueteria.wsdl#xpointer(/definitions/service[@name='ServicioPaqueteria'])" xlink:type="simple"/>
     </services>
