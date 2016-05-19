@@ -13,17 +13,25 @@
     <import namespace="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" location="DescriptorBPEL/TiendaOnlineWSDL.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/ServicioAlmacenWrapper" location="ServicioAlmacenWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://wsAlmacen/" location="http://148.205.38.104:8080/ServicioAlmacen/ServicioAlmacen?WSDL" importType="http://schemas.xmlsoap.org/wsdl/"/>
-    <import namespace="http://enterprise.netbeans.org/bpel/ServicioPagoServiceWrapper" location="ServicioPagoServiceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    
+    
     <import namespace="http://pasarelapago.webservice.adictosaltrabajo.com/" location="http://148.205.38.104:8080/ServicioPago/ServicioPagoService?WSDL" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/ServicioPaqueteriaWrapper" location="ServicioPaqueteriaWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://wsPaqueteria/" location="http://148.205.38.104:8080/ServicioPaqueteria/ServicioPaqueteria?WSDL" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://enterprise.netbeans.org/bpel/ServicioPagoServiceWrapper" location="ServicioPagoServiceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://wsPago/" location="http://148.205.38.102:8080/ServicioPago/ServicioPagoService?WSDL" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="ServicioAlmacen" xmlns:tns="http://enterprise.netbeans.org/bpel/ServicioAlmacenWrapper" partnerLinkType="tns:ServicioAlmacenLinkType" partnerRole="ServicioAlmacenRole"/>
-        <partnerLink name="ServicioPago" xmlns:tns="http://enterprise.netbeans.org/bpel/ServicioPagoServiceWrapper" partnerLinkType="tns:ServicioPagoLinkType" partnerRole="ServicioPagoRole"/>
         <partnerLink name="ServicioPaqueteria" xmlns:tns="http://enterprise.netbeans.org/bpel/ServicioPaqueteriaWrapper" partnerLinkType="tns:ServicioPaqueteriaLinkType" partnerRole="ServicioPaqueteriaRole"/>
-        <partnerLink name="Ventas" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" partnerLinkType="tns:TiendaOnlineWSDL" myRole="TiendaOnlineWSDLPortTypeRole"/>
+    <partnerLink name="ServicioPago" xmlns:tns="http://enterprise.netbeans.org/bpel/ServicioPagoServiceWrapper" partnerLinkType="tns:ServicioPagoLinkType" partnerRole="ServicioPagoRole"/>
+    <partnerLink name="Ventas" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" partnerLinkType="tns:TiendaOnlineWSDL" myRole="TiendaOnlineWSDLPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="RegresaEstadoOut" xmlns:tns="http://wsPago/" messageType="tns:regresaEstadoResponse"/>
+        <variable name="RegresaEstadoIn" xmlns:tns="http://wsPago/" messageType="tns:regresaEstado"/>
+        <variable name="RespURL" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" messageType="tns:TiendaOnlineWSDLOperationResponse"/>
+        <variable name="RegresaURLOut" xmlns:tns="http://wsPago/" messageType="tns:RegresaURLResponse"/>
+        <variable name="RegresaURLIn" xmlns:tns="http://wsPago/" messageType="tns:RegresaURL"/>
         <variable name="TiendaOnlineWSDLOperationOut3" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" messageType="tns:TiendaOnlineWSDLOperationResponse"/>
         <variable name="EnviarProductoOut" xmlns:tns="http://wsPaqueteria/" messageType="tns:enviarProductoResponse"/>
         <variable name="EnviarProductoIn" xmlns:tns="http://wsPaqueteria/" messageType="tns:enviarProducto"/>
@@ -54,19 +62,25 @@
         <if name="If1">
             <condition>true() and $ChecaDispProdOut.parameters/return</condition>
             <sequence name="Sequence1">
-                <assign name="AsigPago">
+                <invoke name="Web" partnerLink="ServicioPago" operation="RegresaURL" xmlns:tns="http://wsPago/" portType="tns:ServicioPago" inputVariable="RegresaURLIn" outputVariable="RegresaURLOut"/>
+                <assign name="Assign1">
                     <copy>
-                        <from variable="TiendaOnlineWSDLOperationIn" part="idCliente"/>
-                        <to>$FacturarIn.parameters/idCliente</to>
-                    </copy>
-                    <copy>
-                        <from>$TiendaOnlineWSDLOperationIn.unidades * $TiendaOnlineWSDLOperationIn.precioUnidad</from>
-                        <to>$FacturarIn.parameters/cuantia</to>
+                        <from>$RegresaURLOut.parameters/return</from>
+                        <to variable="RespURL" part="resultado"/>
                     </copy>
                 </assign>
-                <invoke name="RealizaPago" partnerLink="ServicioPago" operation="facturar" xmlns:tns="http://pasarelapago.webservice.adictosaltrabajo.com/" portType="tns:ServicioPago" inputVariable="FacturarIn" outputVariable="FacturarOut"/>
+                <reply name="RespURL" partnerLink="Ventas" operation="TiendaOnlineWSDLOperation" xmlns:tns="http://j2ee.netbeans.org/wsdl/ServiciosVenta/DescriptorBPEL/TiendaOnlineWSDL" portType="tns:TiendaOnlineWSDLPortType" variable="RespURL"/>
+                <repeatUntil name="RepeatUntil1">
+                    <sequence name="Sequence5">
+                        <wait name="Wait1">
+                            <for>'P0Y0M0DT0H0M1.0S'</for>
+                        </wait>
+                        <invoke name="ValidaPago" partnerLink="ServicioPago" operation="regresaEstado" xmlns:tns="http://wsPago/" portType="tns:ServicioPago" inputVariable="RegresaEstadoIn" outputVariable="RegresaEstadoOut"/>
+                    </sequence>
+                    <condition>$RegresaEstadoOut.parameters/return != 0</condition>
+                </repeatUntil>
                 <if name="If2">
-                    <condition>not(contains($FacturarOut.parameters/return, 'No'))</condition>
+                    <condition>$RegresaEstadoOut.parameters/return = 1</condition>
                     <sequence name="Sequence2">
                         <assign name="AsigOrden">
                             <copy>
